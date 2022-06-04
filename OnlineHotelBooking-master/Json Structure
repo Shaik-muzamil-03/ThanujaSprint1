@@ -1,0 +1,23 @@
+Json Structure
+
+for hotel-
+    {
+        "hotelId": 1,
+        "hotelName": "taj",
+        "hotelType": "5Star",
+        "hotelLocation": "banglore",
+        "hotelRent": 1000,
+        "userRating": 5,
+        "feedback": "good",
+        "numberOfRooms": 15
+    }
+    
+    for bookings-
+    
+    {
+        "bookingId": 1,
+        "hotelId": 1,
+        "userId": 1,
+        "startDate": "10/3",
+        "endDate": "12/3"
+    }
