@@ -68,6 +68,18 @@ public class HotelAccountRestController {
 			throw new InvalidUserException("","");
 		}
 	}
+	@GetMapping("/logout")
+	public boolean doLogout(HttpServletRequest req)
+	{
+		HttpSession session = req.getSession(false);
+		String role = (String)session.getAttribute("role");
+		if(role.equalsIgnoreCase("User"))
+		{
+			session.invalidate(); // to logout
+			return true;
+		}
+		else return false;
+	}
 	
 	
 	@GetMapping("/hotels")
@@ -86,21 +98,50 @@ public class HotelAccountRestController {
 		return status == true?"saved":"done";
 	}
 	@GetMapping("/hotelFeedback/{id}")
-	public String getFeedBack(@PathVariable int id) {
-		String FeedBack = hotelAccountService.getFeedbacks(id);
-		return FeedBack;
+	public String getFeedBack(@PathVariable int id,HttpServletRequest req) throws InvalidUserException {
+		HttpSession session = req.getSession(false);
+		if(session!=null) {
+			String FeedBack = hotelAccountService.getFeedbacks(id);
+			return FeedBack;
+		}
+		else {
+			
+			throw new InvalidUserException("none","none");
+		}
+		
 		
 	}
 	@PostMapping("/Rating")
-	public String setRating(@RequestBody RatingDTO Rating) {
+	
+	public String setRating(@RequestBody RatingDTO Rating,HttpServletRequest req) throws InvalidUserException {
+		HttpSession session = req.getSession(false);
+		if(session!=null) {
 		boolean status = hotelAccountService.setUserRating(Rating.getHotelId(), Rating.getRating());
 		return status == true?"updated":"failed";
+		}
+		else {
+			
+			throw new InvalidUserException("none","none");
+
+			
+		}
 	}
 	@PostMapping("/feedback")
-	public String setFeedBack(@RequestBody FeedbackDTO feedback) {
+	public String setFeedBack(@RequestBody FeedbackDTO feedback,HttpServletRequest req) throws InvalidUserException {
+		HttpSession session = req.getSession(false);
+		if(session!=null) {
 		boolean status = hotelAccountService.setFeedback(feedback.getId(),feedback.getFeedback());
 		return status == true?"updated":"failed";
-	}
+		}
+		else {
+				
+				throw new InvalidUserException("none","none");
+
+				
+			}
+			
+		}
+}
 
 	
-}
+
